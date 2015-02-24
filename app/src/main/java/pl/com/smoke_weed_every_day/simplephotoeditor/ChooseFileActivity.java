@@ -87,8 +87,9 @@ public class ChooseFileActivity extends Activity {
 
         for(int i=0;i<files.length;i++)
         {
-            String extension = MimeTypeMap.getFileExtensionFromUrl(files[i].getAbsolutePath());
-            if(files[i].isDirectory()==true || extension.toLowerCase().equals("jpg") || extension.toLowerCase().equals("png"))
+            String extension = files[i].getName().toLowerCase();
+			extension = extension.substring(extension.lastIndexOf('.')  + 1);
+			if(files[i].isDirectory()==true ||  (extension != null && (extension.equals("jpg") || extension.equals("png"))))
                 setFileInDisplay(files[i], currentDirectory, displayOfFiles);
         }
 
