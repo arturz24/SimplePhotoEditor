@@ -1,6 +1,7 @@
 package pl.com.smoke_weed_every_day.simplephotoeditor;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -60,7 +61,7 @@ public class ChooseFileActivity extends Activity {
         for(int i=0;i<files.length;i++)
         {
             if(files[i].isDirectory()==true)
-                setFileInDisplay(files[i],currentDirectory, displayOfFiles);
+                setFileInDisplay(files[i], currentDirectory, displayOfFiles);
         }
 
         for(int i=0;i<files.length;i++)
@@ -111,6 +112,7 @@ public class ChooseFileActivity extends Activity {
         else
         {
             imageButton.setImageBitmap(mImageIcon);
+            imageButton.setOnClickListener(new ImageClickListener(file.getAbsolutePath()));
         }
 
 
@@ -131,6 +133,27 @@ public class ChooseFileActivity extends Activity {
         baner.addView(imageButton);
         baner.addView(textView);
         displayOfFiles.addView(baner);
+    }
+
+    private void startShowingImage(String file)
+    {
+        Intent intent =new Intent(this,ShowImageActivity.class);
+        intent.putExtra("ImageToLoad",file);
+        startActivity(intent);
+    }
+
+    private class ImageClickListener implements  View.OnClickListener {
+        private String file;
+
+        public ImageClickListener(String file)
+        {
+            this.file=file;
+        }
+
+        @Override
+        public void onClick(View v) {
+            startShowingImage(file);
+        }
     }
 
     private class directoryClickListener implements View.OnClickListener
