@@ -9,12 +9,15 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.Gravity;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Stack;
 
 public class ChooseFileActivity extends Activity {
@@ -50,7 +53,7 @@ public class ChooseFileActivity extends Activity {
     private void showFilesInDirectory(String directoryPath)
     {
         ScrollView scrollView =(ScrollView)findViewById(R.id.displayOfFilesScroll);
-        scrollView.scrollTo(0,0);
+        scrollView.scrollTo(0, 0);
 
         LinearLayout displayOfFiles=(LinearLayout)findViewById(R.id.displayOfFiles);
         displayOfFiles.removeAllViews();
@@ -58,26 +61,35 @@ public class ChooseFileActivity extends Activity {
         File currentDirectory=new File(directoryPath);
         File[] files=currentDirectory.listFiles();
 
-        for(int i=0;i<files.length;i++)
-        {
-            if(files[i].isDirectory()==true)
-                setFileInDisplay(files[i], currentDirectory, displayOfFiles);
-        }
-
-        for(int i=0;i<files.length;i++)
-        {
-            if(files[i].isDirectory()==false)
-            {
-                String fileName=files[i].getName();
-                String extension="";
-                int index = fileName.lastIndexOf('.');
-                if (i > 0) {
-                    extension = fileName.substring(index+1);
+        Arrays.sort(files,new Comparator<File>() {
+            @Override
+            public int compare(File lhs, File rhs) {
+                if(lhs.isDirectory()==true )
+                {
+                    if(rhs.isDirectory()==true)
+                    {
+                        return lhs.getName().compareTo(rhs.getName());
+                    }
+                    else
+                        return -1;
                 }
-
-                if(extension.toLowerCase().equals("jpg")|| extension.toLowerCase().equals("png"))
-                    setFileInDisplay(files[i],currentDirectory, displayOfFiles);
+                else
+                {
+                    if(rhs.isDirectory()==false)
+                    {
+                        return lhs.getName().compareTo(rhs.getName());
+                    }
+                    else
+                        return 1;
+                }
             }
+        });
+
+        for(int i=0;i<files.length;i++)
+        {
+            String extension = MimeTypeMap.getFileExtensionFromUrl(files[i].getAbsolutePath());
+            if(files[i].isDirectory()==true || extension.toLowerCase().equals("jpg") || extension.toLowerCase().equals("png"))
+                setFileInDisplay(files[i], currentDirectory, displayOfFiles);
         }
 
 
