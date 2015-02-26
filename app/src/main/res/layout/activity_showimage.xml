@@ -9,19 +9,5 @@
         android:layout_height="wrap_content"
         android:id="@+id/bitmapViewer"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="1.02"/>
-
-    <HorizontalScrollView
-        android:layout_width="match_parent"
-        android:layout_height="109dp"
-        android:id="@+id/horizontalScrollView"
-        android:layout_gravity="bottom">
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/manipulationButtons">
-        </LinearLayout>
-    </HorizontalScrollView>
+        android:layout_weight="0.54" />
 </LinearLayout>
